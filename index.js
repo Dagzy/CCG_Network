@@ -3,16 +3,28 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const cors = require("cors");
 const PORT = 9001;
 const app = express();
+app.use(express.json());
+app.use(cors());
 dotenv.config();
-mongoose.connect(dotenv.MONGO_URL ||"mongodb://localhost:27017/CCG_Network", (err, db)=>{
-    console.log(err, db); 
-})
+const userRoutes = require("./routes/users");
+const authRoute = require("./routes/auth");
+app.use(helmet());
+app.use(morgan("common"));
+mongoose.connect(
+    // process.env.MONGO_URL ||
+    "mongodb://localhost:27017/CCG_Network",
+    { useNewURLParser: true, useUnifiedTopology: true },
+    err => console.log(`${err ? err : "Connected to MongoDB" }`)
+);
+
+
 app.get("/", (req, res) => {
-    res.send("<h1>Hello!</hello>");
+  res.send("<h1>Hello World!</hello>");
 });
 
-app.listen(PORT, LEVEL => {
-    console.log(`That's over 9000!`);
-});
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoute);
+app.listen(PORT, LEVEL => console.log(`That's over 9000!`));
