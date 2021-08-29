@@ -1,28 +1,39 @@
 {
   "name": "ccg_network",
   "version": "1.0.0",
-  "description": "A social network for CCG players",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon index.js"
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dagzy/CCG_Network.git"
   },
   "keywords": [
-    "CCG",
-    "React",
-    "Express",
-    "MongoDB",
-    "SQL"
+    "react",
+    "express",
+    "mongodb",
+    "ccg",
+    "social_network",
+    "social",
+    "network"
   ],
   "author": "Quincy Williams",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dagzy/CCG_Network/issues"
+  },
+  "homepage": "https://github.com/Dagzy/CCG_Network#readme",
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "helmet": "^4.6.0",
     "mongoose": "^6.0.2",
-    "morgan": "^1.10.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.12"
   }
 }
