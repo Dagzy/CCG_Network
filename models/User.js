@@ -41,29 +41,28 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    description:{
+    description: {
       type: String,
-      max:50
+      max: 50,
     },
-    city:{
+    city: {
       type: String,
-      max:50
+      max: 50,
     },
-    from:{
+    from: {
       type: String,
-      max:50
+      max: 50,
     },
-    relationship:{
+    relationship: {
       type: Number,
-      enum:[1, 2, 3]
+      enum: [1, 2, 3],
     },
-    enabled:{
-      type:Boolean,
-      default:true
-    }
-
+    enabled: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("user", UserSchema);
