@@ -27,14 +27,14 @@ router.post("/register", async (req, res) => {
 });
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email: email })
+  User.findOne({ email: email }).populate("decks").exec()
     .then((user) => {
       if (!user || !user.enabled)
         return res.status(400).json({ message: "Username Not Found" });
       bcrypt.compare(password, user.password).then((didMatch) => {
-        console.log(password, user.password, didMatch);
+        const {password, isAdmin, enabled, ...profile} = user._doc;
         if (didMatch)
-          return res.status(200).json({ message: "login successful" });
+          return res.status(200).json({ message: "login successful", profile: profile });
         else
           return res.status(400).json({
             message: "Username and Password Did Not Match Any Known User",

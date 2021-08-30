@@ -1,3 +1,4 @@
+'use strict';
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -11,6 +12,8 @@ app.use(cors());
 dotenv.config();
 const userRoutes = require("./routes/users");
 const authRoute = require("./routes/auth");
+const cardRoutes = require("./routes/cards");
+const deckRoutes = require("./routes/decks");
 app.use(helmet());
 app.use(morgan("common"));
 mongoose.connect(
@@ -20,11 +23,12 @@ mongoose.connect(
     err => console.log(`${err ? err : "Connected to MongoDB" }`)
 );
 
-
 app.get("/", (req, res) => {
   res.send("<h1>Hello World!</hello>");
 });
 
-app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoute);
+app.use("/api/users", userRoutes);
+app.use("/api/cards", cardRoutes);
+app.use("/api/decks", deckRoutes)
 app.listen(PORT, LEVEL => console.log(`That's over 9000!`));

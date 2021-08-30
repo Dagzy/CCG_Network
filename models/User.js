@@ -61,6 +61,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    decks:[{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"decks"
+    }]
   },
   { timestamps: true }
 );

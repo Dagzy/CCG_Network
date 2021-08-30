@@ -20,6 +20,6 @@ const Deck = new Schema(
   },
   { timestamps: true }
 );
-module.exports = model("deck", Deck);
+module.exports = model("decks", Deck);
 
 //tests: make three cards, make a deck with those three cards and a user

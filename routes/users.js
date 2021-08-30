@@ -95,8 +95,40 @@ router.delete("/:id", (req, res) => {
 });
 
 //get a user
-
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  User.findById(id)
+  .then(user =>{
+    console.log(user)
+    const {password, isAdmin, ...profile} = user;
+    res.status(200).json(profile)
+  })
+  .catch(console.log);
+});
 //follow a user
+router.put("/:id/follow", (req, res)=>{
+  const { id } = req.params;
+  const { userId } = req.body;
+  if(userId !== id){
+    User.findById(id).then(user => {
+      if(!user.following.includes(userId)){
+        User.updateOne({_id:id}, {$push:{following:userId}}, {new:true})
+        .then(update =>{
+          User.updateOne({_id:userId}, {$push:{followers:id}}).then(data => {
+            console.log(data);
+            res.status(200).json({message:"Worked"})
+          })
+        }).catch(err=>res.status(500).json({message:"Follow Failed, An Error Occurred"}))
+      }else{
+        res.status(403).json({message:"You already follow that user."})
+      }
+    })
+  }else{
+    res.status(403).json({message:"You can't follow yourself"})
+  }
+
+  
+})
 //unfollow a user
 
 module.exports = router;
