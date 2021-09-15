@@ -17,6 +17,10 @@ const Post = new Schema(
       type: Schema.Types.ObjectId,
       ref: "users",
     },
+    enabled:{
+      type: Schema.Types.Boolean,
+      default:true
+    }
   },
   { timestamps: true }
 );
