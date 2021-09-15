@@ -45,7 +45,6 @@ router.delete("/:id", (req, res) => {
   const { body } = req;
   const { userId, isAdmin } = body;
   const { id } = req.params;
-  
   //jwt auth will go here
   Post.findById(id).then(post => {
         console.log(userId);
