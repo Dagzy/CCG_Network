@@ -1,0 +1,16 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "A React client intended to interface with the RESTful API that serves CCG_Network data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "React",
+    "react-router-dom",
+    "jwt"
+  ],
+  "author": "Quincy Williams",
+  "license": "MIT"
+}

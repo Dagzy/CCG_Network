@@ -14,6 +14,7 @@ const userRoutes = require("./routes/users");
 const authRoute = require("./routes/auth");
 const cardRoutes = require("./routes/cards");
 const deckRoutes = require("./routes/decks");
+const postRoutes = require("./routes/posts");
 app.use(helmet());
 app.use(morgan("common"));
 mongoose.connect(
@@ -24,11 +25,12 @@ mongoose.connect(
 );
 
 app.get("/", (req, res) => {
-  res.send("<h1>Hello World!</hello>");
+  res.send("<h1>Welcome To The CCG Network!</h1>");
 });
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoutes);
 app.use("/api/cards", cardRoutes);
-app.use("/api/decks", deckRoutes)
+app.use("/api/decks", deckRoutes);
+app.use("/api/posts", postRoutes);
 app.listen(PORT, LEVEL => console.log(`That's over 9000!`));

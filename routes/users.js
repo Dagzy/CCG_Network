@@ -1,7 +1,8 @@
+'use strict'
 const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-//update user
+
 router.put("/:id", (req, res) => {
   const { body } = req;
   const { userId, password, isAdmin, updatingPassword } = body;
@@ -13,7 +14,6 @@ router.put("/:id", (req, res) => {
         .genSalt(parseInt(SALT))
         .then((output) =>
           new Promise((resolve, reject) => {
-            console.log(updatingPassword, output);
             bcrypt.hash(updatingPassword, output).then((hash) => {
               if (hash) {
                 body.password = hash;
@@ -38,9 +38,7 @@ router.put("/:id", (req, res) => {
     } else {
       User.findById(id).then((user) => {
         if (user) {
-          console.log(user);
           bcrypt.compare(password, user.password).then((didMatch) => {
-            console.log(didMatch);
             if (didMatch) {
               const { password, isAdmin, email, username, ...profile } = body;
               User.findByIdAndUpdate(id, { $set: profile }).then((data) =>
@@ -59,8 +57,7 @@ router.put("/:id", (req, res) => {
     res.status(401).json({ message: "You can only update your own user." });
   }
 });
-
-//delete (DISABLE) user
+//(DISABLE) user
 router.delete("/:id", (req, res) => {
   const { body } = req;
   const { userId, password, isAdmin, email } = body;
@@ -94,18 +91,15 @@ router.delete("/:id", (req, res) => {
   }
 });
 
-//get a user
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   User.findById(id)
   .then(user =>{
-    console.log(user)
     const {password, isAdmin, ...profile} = user;
-    res.status(200).json(profile)
+    res.status(200).json(profile);
   })
   .catch(console.log);
 });
-//follow a user
 router.put("/:id/follow", (req, res)=>{
   const { id } = req.params;
   const { userId } = req.body;
@@ -115,20 +109,36 @@ router.put("/:id/follow", (req, res)=>{
         User.updateOne({_id:id}, {$push:{following:userId}}, {new:true})
         .then(update =>{
           User.updateOne({_id:userId}, {$push:{followers:id}}).then(data => {
-            console.log(data);
-            res.status(200).json({message:"Worked"})
+            res.status(200).json({message:"User Followed"});
           })
-        }).catch(err=>res.status(500).json({message:"Follow Failed, An Error Occurred"}))
+        }).catch(err=>res.status(500).json({message:"Follow Failed, An Error Occurred"}));
       }else{
-        res.status(403).json({message:"You already follow that user."})
+        res.status(403).json({message:"You already follow that user."});
       }
     })
   }else{
-    res.status(403).json({message:"You can't follow yourself"})
+    res.status(403).json({message:"You can't follow yourself"});
   }
-
-  
-})
-//unfollow a user
+});
+router.put("/:id/unfollow", (req, res)=>{
+  const { id } = req.params;
+  const { userId } = req.body;
+  if(userId !== id){
+    User.findById(id).then(user => {
+      if(user.following.includes(userId)){
+        User.updateOne({_id:id}, {$pull:{following:userId}}, {new:true})
+        .then(update =>{
+          User.updateOne({_id:userId}, {$pull:{followers:id}}).then(data => {
+            res.status(200).json({message:"User Unfollowed"});
+          })
+        }).catch(err => res.status(500).json({message:"Unfollow Failed, An Error Occurred"}));
+      }else{
+        res.status(403).json({message:"You do not follow that user."});
+      }
+    })
+  }else{
+    res.status(403).json({message:"You can't unfollow yourself"});
+  }
+});
 
 module.exports = router;
